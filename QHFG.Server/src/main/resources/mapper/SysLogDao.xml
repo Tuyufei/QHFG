@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiyun.qhfg.dao.SysLogDao">
+
+    <resultMap type="com.qiyun.qhfg.entity.SysLog" id="SysLogMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="type" column="type" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="message" column="message" jdbcType="VARCHAR"/>
+        <result property="level" column="level" jdbcType="INTEGER"/>
+        <result property="operTime" column="oper_time" jdbcType="TIMESTAMP"/>
+        <result property="operUser" column="oper_user" jdbcType="VARCHAR"/>
+        <result property="delFlag" column="del_flag" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!-- 批量插入 -->
+    <insert id="insertBatch" keyProperty="" useGeneratedKeys="true">
+        insert into public.sys_log(id, type, name, message, level, oper_time, oper_user, del_flag)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.id}, #{entity.type}, #{entity.name}, #{entity.message}, #{entity.level}, #{entity.operTime}, #{entity.operUser}, #{entity.delFlag})
+        </foreach>
+    </insert>
+    <!-- 批量插入或按主键更新 -->
+    <insert id="insertOrUpdateBatch" keyProperty="" useGeneratedKeys="true">
+        insert into public.sys_log(id, type, name, message, level, oper_time, oper_user, del_flag)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.id}, #{entity.type}, #{entity.name}, #{entity.message}, #{entity.level}, #{entity.operTime}, #{entity.operUser}, #{entity.delFlag})
+        </foreach>
+        on duplicate key update
+         id = values(id) , type = values(type) , name = values(name) , message = values(message) , level = values(level) , oper_time = values(oper_time) , oper_user = values(oper_user) , del_flag = values(del_flag)     </insert>
+
+</mapper>
+

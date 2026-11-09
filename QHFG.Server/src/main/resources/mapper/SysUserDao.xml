@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiyun.qhfg.dao.SysUserDao">
+
+    <resultMap type="com.qiyun.qhfg.entity.SysUser" id="SysUserMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userName" column="userName" jdbcType="VARCHAR"/>
+        <result property="passWord" column="passWord" jdbcType="VARCHAR"/>
+        <result property="fullName" column="full_name" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="company" column="company" jdbcType="VARCHAR"/>
+        <result property="region" column="region" jdbcType="VARCHAR"/>
+        <result property="role" column="role" jdbcType="VARCHAR"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="BOOLEAN"/>
+        <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!-- 批量插入 -->
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into public.sys_user(userName, passWord, full_name, phone, email, company, region, role, is_deleted, create_date)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.userName}, #{entity.passWord}, #{entity.fullname}, #{entity.phone}, #{entity.email}, #{entity.company}, #{entity.region}, #{entity.role}, #{entity.isDeleted}, #{entity.createDate})
+        </foreach>
+    </insert>
+    <!-- 批量插入或按主键更新 -->
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into public.sys_user(userName, passWord, full_name, phone, email, company, region, role, is_deleted, create_date)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userName}, #{entity.passWord}, #{entity.fullname}, #{entity.phone}, #{entity.email}, #{entity.company}, #{entity.region}, #{entity.role}, #{entity.isDeleted}, #{entity.createDate})
+        </foreach>
+        on duplicate key update
+         userName = values(userName) , passWord = values(passWord) , full_name = values(full_name) , phone = values(phone) , email = values(email) , company = values(company) , region = values(region) , role = values(role) , is_deleted = values(is_deleted) , create_date = values(create_date)     </insert>
+
+    <select id="queryUser" resultType="com.qiyun.qhfg.entity.SysUser">
+        SELECT
+            "id",
+            "userName",
+            "passWord",
+            "role",
+            "phone",
+            "company"
+        FROM
+            sys_user
+        WHERE
+            "userName" = #{userName}
+            AND "passWord" = #{passWord}
+    </select>
+
+    <select id="queryUserMaxId" resultType="java.lang.Integer">
+        SELECT max("id")+1 FROM sys_user
+    </select>
+
+    <delete id="addUser">
+        insert into sys_user("id","userName","passWord","role") values (#{newId},#{userName},#{passWord},#{roleName})
+    </delete>
+
+    <select id="queryUserByName" resultType="java.util.Map">
+        SELECT
+            "id",
+            "userName",
+            "role",
+            "phone",
+            "company"
+        FROM
+            sys_user
+        WHERE
+            "userName" = #{userName}
+    </select>
+
+    <delete id="delete">
+        delete from sys_user where "id"=#{id}
+    </delete>
+
+    <select id="queryUserById" resultType="java.util.Map">
+        SELECT
+            "id",
+            "userName",
+            "passWord",
+            "role",
+            "phone",
+            "company"
+        FROM
+            sys_user
+        WHERE
+            "id" = #{id}
+    </select>
+
+    <update id="update">
+        update sys_user
+        set
+        "id" =#{id}
+        <if test="userName !=null and userName != ''">
+            ,"userName" = #{userName}
+        </if>
+        <if test="phone !=null and phone != ''">
+            ,"phone"=#{phone}
+        </if>
+        <if test="company !=null and company != ''">
+            ,"company"=#{company}
+        </if>
+        <if test="role !=null and role != ''">
+            ,"role"=#{role}
+        </if>
+        <if test="passWord !=null and passWord != ''">
+            ,"passWord"=#{passWord}
+        </if>
+        where
+        "id" =#{id}
+    </update>
+
+    <select id="list" resultType="java.util.Map">
+        SELECT
+        ( SELECT COUNT ( * ) from sys_user ) as total,
+            "id",
+            "userName",
+            '******' "passWord",
+            "role",
+            "phone",
+            "company"
+        FROM
+            sys_user
+        ORDER BY
+            "id"
+        OFFSET
+            ( #{ pageIndex }- 1 ) *#{ pageSize }
+        LIMIT #{ pageSize}
+    </select>
+
+</mapper>
+

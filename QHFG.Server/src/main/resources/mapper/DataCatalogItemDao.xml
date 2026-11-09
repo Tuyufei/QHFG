@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiyun.qhfg.dao.DataCatalogItemDao">
+
+    <resultMap type="com.qiyun.qhfg.entity.DataCatalogItem" id="DataCatalogItemMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="catalogItemType" column="catalog_item_type" jdbcType="INTEGER"/>
+        <result property="catalogItemId" column="catalog_item_id" jdbcType="VARCHAR"/>
+        <result property="parentId" column="parent_id" jdbcType="INTEGER"/>
+        <result property="regDate" column="reg_date" jdbcType="TIMESTAMP"/>
+        <result property="tags" column="tags" jdbcType="VARCHAR"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="srcFormat" column="src_format" jdbcType="VARCHAR"/>
+        <result property="footprint" column="footprint" jdbcType="VARCHAR"/>
+        <result property="footprintNative" column="footprint_native" jdbcType="VARCHAR"/>
+        <result property="coDecoderName" column="co_decoder_name" jdbcType="FLOAT"/>
+        <result property="coWorkspace" column="co_workspace" jdbcType="FLOAT"/>
+        <result property="ogcName" column="ogc_name" jdbcType="VARCHAR"/>
+        <result property="coFileUri" column="co_file_uri" jdbcType="FLOAT"/>
+        <result property="coSeXMax" column="co_se_x_max" jdbcType="FLOAT"/>
+        <result property="coSeXMin" column="co_se_x_min" jdbcType="FLOAT"/>
+        <result property="coSeXPixelSize" column="co_se_x_pixel_size" jdbcType="FLOAT"/>
+        <result property="coSeYMax" column="co_se_y_max" jdbcType="FLOAT"/>
+        <result property="coSeYMin" column="co_se_y_min" jdbcType="FLOAT"/>
+        <result property="coSeYPixelSize" column="co_se_y_pixel_size" jdbcType="FLOAT"/>
+        <result property="irMetadataUri" column="ir_metadata_uri" jdbcType="VARCHAR"/>
+        <result property="lastModifyDate" column="last_modify_date" jdbcType="TIMESTAMP"/>
+        <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
+        <result property="thumbImg" column="thumb_img" jdbcType="VARCHAR"/>
+        <result property="geoRes" column="geo_res" jdbcType="VARCHAR"/>
+        <result property="timeCycle" column="time_cycle" jdbcType="TIMESTAMP"/>
+        <result property="dataTime" column="data_time" jdbcType="TIMESTAMP"/>
+        <result property="text" column="text" jdbcType="VARCHAR"/>
+        <result property="region" column="region" jdbcType="VARCHAR"/>
+        <result property="qgsMap" column="qgs_map" jdbcType="VARCHAR"/>
+        <result property="source" column="source" jdbcType="VARCHAR"/>
+        <result property="mata" column="mata" jdbcType="OTHER" javaType="com.alibaba.fastjson.JSONObject"
+                typeHandler="com.baomidou.mybatisplus.extension.handlers.FastjsonTypeHandler"/>
+    </resultMap>
+
+    <!-- 批量插入 -->
+    <insert id="insertBatch" keyProperty="" useGeneratedKeys="true">
+        insert into public.data_catalog_item(id, catalog_item_type, catalog_item_id, parent_id, reg_date, tags, description, title, src_format, footprint, footprint_native, co_decoder_name, co_workspace, ogc_name, co_file_uri, co_se_x_max, co_se_x_min, co_se_x_pixel_size, co_se_y_max, co_se_y_min, co_se_y_pixel_size, ir_metadata_uri, last_modify_date, update_user, thumb_img, geo_res, time_cycle, data_time, text, region, qgs_map, source, mata)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.id}, #{entity.catalogItemType}, #{entity.catalogItemId}, #{entity.parentId}, #{entity.regDate}, #{entity.tags}, #{entity.description}, #{entity.title}, #{entity.srcFormat}, #{entity.footprint}, #{entity.footprintNative}, #{entity.coDecoderName}, #{entity.coWorkspace}, #{entity.ogcName}, #{entity.coFileUri}, #{entity.coSeXMax}, #{entity.coSeXMin}, #{entity.coSeXPixelSize}, #{entity.coSeYMax}, #{entity.coSeYMin}, #{entity.coSeYPixelSize}, #{entity.irMetadataUri}, #{entity.lastModifyDate}, #{entity.updateUser}, #{entity.thumbImg}, #{entity.geoRes}, #{entity.timeCycle}, #{entity.dataTime}, #{entity.text}, #{entity.region}, #{entity.qgsMap}, #{entity.source}, #{entity.mata})
+        </foreach>
+    </insert>
+    <!-- 批量插入或按主键更新 -->
+    <insert id="insertOrUpdateBatch" keyProperty="" useGeneratedKeys="true">
+        insert into public.data_catalog_item(id, catalog_item_type, catalog_item_id, parent_id, reg_date, tags, description, title, src_format, footprint, footprint_native, co_decoder_name, co_workspace, ogc_name, co_file_uri, co_se_x_max, co_se_x_min, co_se_x_pixel_size, co_se_y_max, co_se_y_min, co_se_y_pixel_size, ir_metadata_uri, last_modify_date, update_user, thumb_img, geo_res, time_cycle, data_time, text, region, qgs_map, source, mata)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.id}, #{entity.catalogItemType}, #{entity.catalogItemId}, #{entity.parentId}, #{entity.regDate}, #{entity.tags}, #{entity.description}, #{entity.title}, #{entity.srcFormat}, #{entity.footprint}, #{entity.footprintNative}, #{entity.coDecoderName}, #{entity.coWorkspace}, #{entity.ogcName}, #{entity.coFileUri}, #{entity.coSeXMax}, #{entity.coSeXMin}, #{entity.coSeXPixelSize}, #{entity.coSeYMax}, #{entity.coSeYMin}, #{entity.coSeYPixelSize}, #{entity.irMetadataUri}, #{entity.lastModifyDate}, #{entity.updateUser}, #{entity.thumbImg}, #{entity.geoRes}, #{entity.timeCycle}, #{entity.dataTime}, #{entity.text}, #{entity.region}, #{entity.qgsMap}, #{entity.source}, #{entity.mata})
+        </foreach>
+        on duplicate key update
+         id = values(id) , catalog_item_type = values(catalog_item_type) , catalog_item_id = values(catalog_item_id) , parent_id = values(parent_id) , reg_date = values(reg_date) , tags = values(tags) , description = values(description) , title = values(title) , src_format = values(src_format) , footprint = values(footprint) , footprint_native = values(footprint_native) , co_decoder_name = values(co_decoder_name) , co_workspace = values(co_workspace) , ogc_name = values(ogc_name) , co_file_uri = values(co_file_uri) , co_se_x_max = values(co_se_x_max) , co_se_x_min = values(co_se_x_min) , co_se_x_pixel_size = values(co_se_x_pixel_size) , co_se_y_max = values(co_se_y_max) , co_se_y_min = values(co_se_y_min) , co_se_y_pixel_size = values(co_se_y_pixel_size) , ir_metadata_uri = values(ir_metadata_uri) , last_modify_date = values(last_modify_date) , update_user = values(update_user) , thumb_img = values(thumb_img) , geo_res = values(geo_res) , time_cycle = values(time_cycle) , data_time = values(data_time) , text = values(text) , region = values(region) , qgs_map = values(qgs_map) , source = values(source) , mata = values(mata)     </insert>
+
+</mapper>
+

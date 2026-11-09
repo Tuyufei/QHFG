@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiyun.qhfg.dao.StyleInfoDao">
+
+    <resultMap type="com.qiyun.qhfg.entity.StyleInfo" id="StyleInfoMap">
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="styleName" column="style_name" jdbcType="VARCHAR"/>
+        <result property="bandRed" column="band_red" jdbcType="INTEGER"/>
+        <result property="bandGreen" column="band_green" jdbcType="INTEGER"/>
+        <result property="bandBlue" column="band_blue" jdbcType="INTEGER"/>
+        <result property="stretchMethod" column="stretch_method" jdbcType="VARCHAR"/>
+        <result property="styleFormat" column="style_format" jdbcType="VARCHAR"/>
+        <result property="styleContent" column="style_content" jdbcType="VARCHAR"/>
+        <result property="styleType" column="style_type" jdbcType="VARCHAR"/>
+        <result property="deleteFlag" column="delete_flag" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+        <result property="remarks" column="remarks" jdbcType="VARCHAR"/>
+        <result property="dataStatus" column="data_status" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!-- 批量插入 -->
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into public.style_info(style_name, band_red, band_green, band_blue, stretch_method, style_format, style_content, style_type, delete_flag, create_time, create_by, update_time, update_by, remarks, data_status)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.styleName}, #{entity.bandRed}, #{entity.bandGreen}, #{entity.bandBlue}, #{entity.stretchMethod}, #{entity.styleFormat}, #{entity.styleContent}, #{entity.styleType}, #{entity.deleteFlag}, #{entity.createTime}, #{entity.createBy}, #{entity.updateTime}, #{entity.updateBy}, #{entity.remarks}, #{entity.dataStatus})
+        </foreach>
+    </insert>
+    <!-- 批量插入或按主键更新 -->
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into public.style_info(style_name, band_red, band_green, band_blue, stretch_method, style_format, style_content, style_type, delete_flag, create_time, create_by, update_time, update_by, remarks, data_status)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.styleName}, #{entity.bandRed}, #{entity.bandGreen}, #{entity.bandBlue}, #{entity.stretchMethod}, #{entity.styleFormat}, #{entity.styleContent}, #{entity.styleType}, #{entity.deleteFlag}, #{entity.createTime}, #{entity.createBy}, #{entity.updateTime}, #{entity.updateBy}, #{entity.remarks}, #{entity.dataStatus})
+        </foreach>
+        on duplicate key update
+         style_name = values(style_name) , band_red = values(band_red) , band_green = values(band_green) , band_blue = values(band_blue) , stretch_method = values(stretch_method) , style_format = values(style_format) , style_content = values(style_content) , style_type = values(style_type) , delete_flag = values(delete_flag) , create_time = values(create_time) , create_by = values(create_by) , update_time = values(update_time) , update_by = values(update_by) , remarks = values(remarks) , data_status = values(data_status)     </insert>
+
+</mapper>
+

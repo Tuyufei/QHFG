@@ -1,0 +1,41 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 512MB
+      max-request-size: 512MB
+  datasource:
+    dynamic:
+      primary: master #设置默认的数据源或者数据源组,默认值即为master
+      strict: false #严格匹配数据源,默认false. true未匹配到指定数据源时抛异常,false使用默认数据源
+      datasource:
+        master:
+          url: jdbc:postgresql://129.211.174.149:5432/QHFG?useUnicode=true&&characterEncoding=utf-8&useSSL=false&stringtype=unspecified
+          username: qhfg_admin
+          password: qhfg_admin@2024#
+          type: com.alibaba.druid.pool.DruidDataSource
+          driver-class-name: org.postgresql.Driver
+server:
+  port: 5001
+start-class: QhfgApplication
+mybatis-plus:
+  type-handlers-package: com.qiyun.qhfg.typeHandler
+  configuration:
+    call-setters-on-nulls: true
+    #打印sql
+    log-impl:  org.apache.ibatis.logging.stdout.StdOutImpl
+#加密配置
+encryption:
+  iv: GfnPfrpfd48
+  Key: Gdbc7i9hdlKlf8M6mlgGrMC6PbryXrxw
+swagger:
+  # 只要不是true就不启用
+  enable: true
+  production: false
+  basic:
+    enable: true
+    username: QHFG
+    password: Qy#2024@
+serverPath: http://localhost:81/qgisserver
+#serverPath: http://10.104.95.111:81/qgisserver
+qgisServerUrl: http://129.211.174.149:8081/GIS
+qgisDataDir: /home/qgisDataDir
